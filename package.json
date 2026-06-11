@@ -1,0 +1,25 @@
+{
+  "name": "elite-speciality-clinic",
+  "version": "1.0.0",
+  "description": "Official website for Elite Speciality Clinic — Dwarka's premier dental care centre offering advanced implants, orthodontics, cosmetic dentistry & more.",
+  "author": "Elite Speciality Clinic",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "firebase": "^12.14.0",
+    "lucide-react": "^1.17.0",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-icons": "^5.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9"
+  }
+}

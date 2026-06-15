@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CalendarPlus, Phone, CheckCircle, Star } from "lucide-react";
+import { fetchGoogleReviews } from "@/lib/googleReviews";
+import { CalendarPlus, Phone, CheckCircle, Star, Award, Heart, Microscope, ShieldCheck, Building2, FlaskConical, Gem, Smile } from "lucide-react";
 import styles from "./page.module.css";
 
 const services = [
@@ -15,13 +16,14 @@ const services = [
 ];
 
 const whyUs = [
-  { icon: "🏅", title: "High-Quality Dentistry", desc: "Internationally trained specialists with years of clinical expertise." },
-  { icon: "❤️", title: "Patient-First Approach", desc: "Your comfort and satisfaction is our highest priority, always." },
-  { icon: "🔬", title: "State-of-the-Art Technology", desc: "Digital X-rays, dental microscopes, Zoom whitening and more." },
-  { icon: "🛡️", title: "Strict Sterilisation", desc: "100% adherence to global infection control protocols." },
-  { icon: "🏗️", title: "World-Class Infrastructure", desc: "Modern clinic designed for precision, hygiene, and comfort." },
-  { icon: "⚗️", title: "In-House Lab Support", desc: "Faster, more accurate results with our on-site dental lab." },
-  { icon: "💎", title: "Transparent Pricing", desc: "Fair and honest estimates with no hidden charges, ensuring complete peace of mind." },
+  { icon: <Award size={32} color="#F59E0B" />, bg: "rgba(245,158,11,0.12)", title: "High-Quality Dentistry", desc: "Internationally trained specialists with years of clinical expertise." },
+  { icon: <Heart size={32} color="#EF4444" />, bg: "rgba(239,68,68,0.12)", title: "Patient-First Approach", desc: "Your comfort and satisfaction is our highest priority, always." },
+  { icon: <Microscope size={32} color="#3B82F6" />, bg: "rgba(59,130,246,0.12)", title: "State-of-the-Art Technology", desc: "Digital X-rays, dental microscopes, Zoom whitening and more." },
+  { icon: <ShieldCheck size={32} color="#10B981" />, bg: "rgba(16,185,129,0.12)", title: "Strict Sterilisation", desc: "100% adherence to global infection control protocols." },
+  { icon: <Building2 size={32} color="#8B5CF6" />, bg: "rgba(139,92,246,0.12)", title: "World-Class Infrastructure", desc: "Modern clinic designed for precision, hygiene, and comfort." },
+  { icon: <FlaskConical size={32} color="#EC4899" />, bg: "rgba(236,72,153,0.12)", title: "In-House Lab Support", desc: "Faster, more accurate results with our on-site dental lab." },
+  { icon: <Gem size={32} color="#06B6D4" />, bg: "rgba(6,182,212,0.12)", title: "Transparent Pricing", desc: "Fair and honest estimates with no hidden charges, ensuring complete peace of mind." },
+  { icon: <Smile size={32} color="#F97316" />, bg: "rgba(249,115,22,0.12)", title: "Painless Procedures", desc: "Gentle, anxiety-free treatment with advanced anaesthesia techniques for your comfort." },
 ];
 
 const stats = [
@@ -33,39 +35,59 @@ const stats = [
 
 const testimonials = [
   {
-    name: "Priya Sharma",
-    location: "Dwarka, Delhi",
-    text: "Got my root canal done here. Absolutely painless — I was shocked. The doctor explained every step. Highly recommended to anyone afraid of dental procedures.",
+    name: "Arun Verma",
+    location: "Dwarka Sector 7",
+    text: "I had a wonderful experience at Elite Speciality Clinic. Dr. Kavita is highly professional and the root canal was completely painless! She explains everything very clearly.",
     rating: 5,
   },
   {
-    name: "Rajesh Kumar",
-    location: "Sector 7, Dwarka",
-    text: "Had my dental implants placed at Elite Speciality Clinic. The team is professional, the clinic is spotlessly clean, and the result is amazing. My smile has completely transformed.",
-    rating: 5,
-  },
-  {
-    name: "Anita Verma",
-    location: "Dwarka Mor",
-    text: "Zoom whitening session was fantastic. In just one visit my teeth are noticeably whiter. The staff is very welcoming and the doctor is gentle and thorough.",
-    rating: 5,
-  },
-  {
-    name: "Sanjay Singhal",
+    name: "Meenakshi Tiwari",
     location: "Dwarka Sector 12",
-    text: "Very professional doctors and staff. The clinic is equipped with the latest technology. Got my invisible braces here and the progress has been excellent.",
+    text: "My smile makeover completely changed my confidence. Dr. Kavita was so patient and avoided any unnecessary procedures. Truly the best dental clinic in Dwarka!",
+    rating: 5,
+  },
+  {
+    name: "Sanjay Kaushik",
+    location: "Sector 10",
+    text: "I was very scared of dental treatments but the team here made it so simple. Very honest advice from Dr. Kavita. Highly recommended for any dental issues.",
+    rating: 5,
+  },
+  {
+    name: "Dr. Anjali Sen",
+    location: "Dwarka Sector 4",
+    text: "Being a medical professional, I am very particular about hygiene. Elite clinic maintains top-notch sterilization. Dr. Kavita and Dr. Amit run an exceptional practice.",
     rating: 5,
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const googleData = await fetchGoogleReviews();
+  const siteData = {};
+
+  const content = {
+    heroImage: siteData.heroImage || "/images/hero-banner.png",
+    heroTag: siteData.heroTag || "Awarded Best Dental Clinic · Dwarka, Delhi",
+    heroTitle: siteData.heroTitle || "Excellence. Ethics. Expertise.",
+    heroDesc: siteData.heroDesc || "World-class dentistry trusted by 10,000+ patients across Delhi NCR. Advanced treatments, painless procedures, and lifetime care.",
+    stat1: siteData.stat1 || "10,000+", stat1Label: siteData.stat1Label || "Happy Patients",
+    stat2: siteData.stat2 || "15+", stat2Label: siteData.stat2Label || "Years of Excellence",
+    stat3: siteData.stat3 || "15+", stat3Label: siteData.stat3Label || "Treatments Offered",
+    stat4: siteData.stat4 || "100%", stat4Label: siteData.stat4Label || "Sterilisation Standard",
+  };
+  const displayTestimonials = googleData?.reviews ? googleData.reviews.map((r, idx) => ({
+    name: r.author_name,
+    location: r.relative_time_description,
+    text: r.text,
+    rating: r.rating,
+  })) : testimonials;
+
   return (
     <main className={styles.main}>
 
       {/* ── HERO ── */}
       <section className={styles.hero}>
         <Image
-          src="/images/hero-banner.png"
+          src={content.heroImage}
           alt="Elite Speciality Clinic"
           fill
           style={{ objectFit: "cover", objectPosition: "center" }}
@@ -73,27 +95,29 @@ export default function Home() {
         />
         <div className={styles.heroOverlay} />
         <div className={`container ${styles.heroInner}`}>
-          <div className={styles.heroContent}>
-            <span className={styles.heroTag}>Awarded Best Dental Clinic · Dwarka, Delhi</span>
-            <h1 className={styles.heroTitle}>
+
+          {/* ── HERO RIGHT BOX ── */}
+          <div className={styles.heroBox}>
+            <span className={styles.heroTag}>🏆 {content.heroTag}</span>
+            <h1 className={styles.heroBoxMainTitle}>
               Excellence. Ethics.<br />
-              <span className={styles.heroAccent}>Expertise.</span>
+              <span className={styles.heroBoxAccent}>Expertise.</span>
             </h1>
-            <p className={styles.heroSub}>
-              World-class dentistry trusted by 10,000+ patients across Delhi NCR. Advanced treatments, painless procedures, and lifetime care.
+            <p className={styles.heroBoxDesc}>
+              {content.heroDesc}
             </p>
-            <div className={styles.heroBtns}>
-              <Link href="/contact" className={styles.heroPrimary}>
-                <CalendarPlus size={18} /> Book Appointment
+            <div className={styles.heroBoxBtns}>
+              <Link href="/contact" className={styles.heroBoxBtn}>
+                <CalendarPlus size={16} /> Book Appointment
               </Link>
-              <a href="tel:8510007234" className={styles.heroSecondary}>
-                <Phone size={18} /> 8510007234
+              <a href="tel:8510007234" className={styles.heroBoxCall}>
+                <Phone size={15} /> 85100 07234
               </a>
             </div>
-            <div className={styles.heroTrust}>
-              <span><CheckCircle size={15} /> Painless Procedures</span>
-              <span><CheckCircle size={15} /> Lifetime Guarantee on RCT</span>
-              <span><CheckCircle size={15} /> 100% Sterilised</span>
+            <div className={styles.heroBoxTrust}>
+              <span><CheckCircle size={13} /> Painless Procedures</span>
+              <span><CheckCircle size={13} /> Lifetime Guarantee on RCT</span>
+              <span><CheckCircle size={13} /> 100% Sterilised</span>
             </div>
           </div>
         </div>
@@ -102,8 +126,13 @@ export default function Home() {
       {/* ── STATS ── */}
       <section className={styles.statsSection}>
         <div className={`container ${styles.statsGrid}`}>
-          {stats.map((s) => (
-            <div key={s.label} className={styles.statCard}>
+          {[
+            { number: content.stat1, label: content.stat1Label },
+            { number: content.stat2, label: content.stat2Label },
+            { number: content.stat3, label: content.stat3Label },
+            { number: content.stat4, label: content.stat4Label },
+          ].map((s, idx) => (
+            <div key={idx} className={styles.statCard}>
               <span className={styles.statNum}>{s.number}</span>
               <span className={styles.statLbl}>{s.label}</span>
             </div>
@@ -122,7 +151,9 @@ export default function Home() {
           <div className={styles.whyGrid}>
             {whyUs.map((w) => (
               <div key={w.title} className={styles.whyCard}>
-                <span className={styles.whyIcon}>{w.icon}</span>
+                <div className={styles.whyIcon} style={{ background: w.bg }}>
+                  {w.icon}
+                </div>
                 <h3 className={styles.whyTitle}>{w.title}</h3>
                 <p className={styles.whyDesc}>{w.desc}</p>
               </div>
@@ -203,7 +234,7 @@ export default function Home() {
             <p className={styles.sectionSub}>Real experiences from real patients across Dwarka and Delhi NCR.</p>
           </div>
           <div className={styles.testimonialsGrid}>
-            {testimonials.map((t, i) => (
+            {displayTestimonials.slice(0, 4).map((t, i) => (
               <div key={i} className={styles.testimonialCard}>
                 <div className={styles.stars}>
                   {Array.from({ length: t.rating }).map((_, j) => (

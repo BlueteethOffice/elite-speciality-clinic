@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { CalendarPlus, Menu, X, ChevronDown } from "lucide-react";
 import styles from "./Navbar.module.css";
 
@@ -24,8 +25,11 @@ const serviceLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+
+  if (pathname?.startsWith("/admin")) return null;
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

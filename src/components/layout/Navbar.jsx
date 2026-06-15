@@ -1,7 +1,7 @@
 "use client";
 
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { CalendarPlus, Menu, X, ChevronDown } from "lucide-react";
 import styles from "./Navbar.module.css";
@@ -28,6 +28,16 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const closeTimer = React.useRef(null);
+
+  const openDropdown = () => {
+    clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+  };
+
+  const closeDropdown = () => {
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
+  };
 
   if (pathname?.startsWith("/admin")) return null;
   const [scrolled, setScrolled] = useState(false);
@@ -68,8 +78,8 @@ export default function Navbar() {
             {/* Services Dropdown */}
             <div
               className={styles.dropdown}
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
+              onMouseEnter={openDropdown}
+              onMouseLeave={closeDropdown}
             >
               <Link href="/services" className={`${styles.navLink} ${styles.dropdownTrigger}`}>
                 Treatments <ChevronDown size={14} />

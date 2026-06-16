@@ -341,13 +341,13 @@
 /* ══════════════════════════════════════
    8. FAQ
 ══════════════════════════════════════ */
-.faqSection { padding: 32px 0 96px; background: #F8FAFC; }
+.faqSection { padding: 32px 0 48px; background: #F8FAFC; }
 .faqSection .label { font-size: 1.15rem; font-weight: 900; }
 
 /* ══════════════════════════════════════
    9. RELATED TREATMENTS
 ══════════════════════════════════════ */
-.relatedSection { padding: 64px 0 96px; background: #fff; }
+.relatedSection { padding: 48px 0 80px; background: #fff; }
 .relatedGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .relatedCard {
   display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
@@ -469,12 +469,118 @@
 }
 
 @media (max-width: 560px) {
-  .hero { padding: 44px 0 52px; }
-  .heroTitle { font-size: 2.1rem; }
-  .trustRow { gap: 12px; }
-  .heroCtas { flex-direction: column; }
-  .ctaBook, .ctaWhatsapp, .ctaCall { justify-content: center; }
-  .clinicStats { flex-wrap: wrap; gap: 16px; }
+  /* Hero */
+  .hero { padding: 20px 0 20px; min-height: auto; }
+  .heroContainer { padding: 20px 5% 10px; }
+  .breadcrumb { margin-bottom: 12px; font-size: 0.82rem; }
+  .heroBadge { font-size: 0.75rem; padding: 5px 12px; margin-bottom: 12px; }
+  .heroTitle { font-size: 1.9rem; line-height: 1.1; margin-bottom: 10px; }
+  .heroTagline { font-size: 0.92rem; margin-bottom: 14px; line-height: 1.5; }
+  .heroCtas { flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .ctaBook, .ctaWhatsapp, .ctaCall {
+    justify-content: center; width: 100%;
+    font-size: 0.9rem; padding: 12px 18px;
+  }
+  .trustRow { gap: 8px; flex-direction: column; margin-top: 6px; }
+  .trustBadge { font-size: 0.82rem; }
+  .trustIcon { width: 32px; height: 32px; }
+
+  /* Stats */
+  .statsRow { grid-template-columns: repeat(3, 1fr); }
+  .statItem { border-right: none; border-bottom: none; padding: 16px 8px; }
+  .statNum { font-size: 1.4rem; }
+  .statLbl { font-size: 0.6rem; }
+
+  /* Overview */
+  .overviewSection { padding: 48px 0; }
+  .bodyText { font-size: 0.92rem; line-height: 1.75; }
+  .benefitsCard { padding: 24px 20px; }
+
+  /* Process timeline */
+  .processSection { padding: 48px 0; }
+  .timelineContent { min-height: auto; padding: 14px 12px; }
+  .timelineTitle { font-size: 0.82rem; }
+  .timelineDesc { font-size: 0.7rem; }
+  /* Vertical connecting line — aligned to circle center */
+  .timelineItem:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    transform: none;
+    top: 48px;
+    width: 2px;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,166,166,0.7), rgba(0,166,166,0.15));
+    z-index: 0;
+  }
+  .timelineItem { position: relative; padding-bottom: 8px; }
+
+  /* Why treatment */
+  .whyTreatSection { padding: 40px 0; }
   .benefitCardsGrid { grid-template-columns: 1fr; gap: 12px; }
-  .ctaBtnPrimary { color: #0B1F3A; }
+  .benefitCard { padding: 20px 16px; height: auto; }
+  .benefitCardText { font-size: 0.9rem; }
+
+  /* Clinic section */
+  .clinicSection { padding: 48px 0; }
+  .clinicStats { flex-wrap: nowrap; gap: 12px; }
+  .clinicStats { display: flex; flex-direction: row; justify-content: space-between; }
+  .clinicStat span { font-size: 1.3rem; }
+  .clinicStat label { font-size: 0.58rem; }
+  .featureCard { padding: 18px 16px; gap: 14px; }
+  .featureTitle { font-size: 0.9rem; }
+  .featureDesc { font-size: 0.82rem; }
+
+  /* Related */
+  .relatedSection { padding: 40px 0; }
+  .relatedGrid { grid-template-columns: 1fr; gap: 12px; }
+  .relatedCard { padding: 20px; flex-direction: row; align-items: center; gap: 12px; }
+  .relatedTitle { font-size: 0.95rem; }
+  .relatedDesc { font-size: 0.82rem; }
+
+  /* CTA Banner */
+  .ctaBannerSection { padding: 20px 0 40px; }
+  .ctaBannerCard { padding: 24px 18px; border-radius: 20px; }
+  .ctaTitle { font-size: 1.4rem; white-space: normal; line-height: 1.2; }
+  .ctaDesc { font-size: 0.86rem; margin-bottom: 14px; }
+  .ctaTrustRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 6px;
+    margin-bottom: 16px;
+  }
+  .ctaTrustDivider { display: none; }
+  .ctaTrustItem { padding: 0; }
+  .ctaTrustNum { font-size: 1.2rem; }
+  .ctaTrustLbl { font-size: 0.6rem; }
+  .ctaBtnPrimary, .ctaBtnCall, .ctaBtnWa {
+    width: 100%; justify-content: center;
+    font-size: 0.88rem; padding: 12px 16px;
+  }
+  .ctaBtns { flex-direction: column; width: 100%; gap: 8px; }
+
+  /* Related Treatments — horizontal scroll */
+  .relatedSection { padding: 36px 0; }
+  .relatedGrid {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    gap: 14px;
+    padding: 4px 4px 12px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    grid-template-columns: unset !important;
+  }
+  .relatedGrid::-webkit-scrollbar { display: none; }
+  .relatedCard {
+    flex: 0 0 240px;
+    min-width: 240px;
+    flex-direction: column !important;
+    padding: 20px 18px;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .relatedTitle { font-size: 1rem; }
+  .relatedDesc { font-size: 0.82rem; }
+  .relatedArrow { align-self: flex-end; margin-top: auto; }
 }

@@ -382,15 +382,23 @@
 /* ══════ LIGHTBOX ══════ */
 .lightbox { position: fixed; inset: 0; z-index: 9100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .lightboxBackdrop { position: absolute; inset: 0; background: rgba(11,31,58,0.88); backdrop-filter: blur(8px); }
-.lightboxBox { position: relative; z-index: 1; width: 90vw; height: 80vh; max-width: 900px; border-radius: 16px; overflow: hidden; }
+.lightboxBox {
+  position: relative; z-index: 1;
+  width: min(90vw, 900px);
+  aspect-ratio: 16/10;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  background: #0B1F3A;
+}
 .lightboxClose {
   position: absolute; top: 14px; right: 14px; z-index: 10;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(255,255,255,0.15); color: #fff;
-  border: 1px solid rgba(255,255,255,0.25); cursor: pointer;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(0,0,0,0.55); color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.3); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s ease;
 }
-.lightboxClose:hover { background: rgba(255,255,255,0.28); }
+.lightboxClose:hover { background: rgba(255,255,255,0.2); }
 
 /* ══════ RESPONSIVE ══════ */
 @media (max-width: 1024px) {
@@ -405,20 +413,157 @@
   .certGrid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
+  /* Hero — show image as background on mobile */
+  .heroInner {
+    position: relative;
+    min-height: 460px;
+  }
+  .heroRight {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 30%;
+    right: 0;
+    width: 70%;
+    height: 100%;
+    overflow: hidden;
+    opacity: 0.22;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, black 60%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, black 60%);
+  }
+  .heroLeft { padding: 36px 0 28px; gap: 16px; position: relative; z-index: 2; }
+  .heroTitle { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .heroSub { font-size: 0.92rem; }
+  .heroStats {
+    gap: 16px; padding: 14px 16px;
+    width: 100%; justify-content: space-between;
+  }
+  .heroStatVal { font-size: 1.2rem; }
+  .heroStatLbl { font-size: 0.65rem; }
+  .heroBtns { flex-direction: column; width: 100%; }
+  .btnPrimary, .btnOutline { justify-content: center; width: 100%; }
+
+  /* Story */
+  .storyLayout { gap: 32px; }
+  .storyText { font-size: 0.92rem; }
+
+  /* Timeline */
+  .timelineTitle { font-size: 0.98rem; }
+  .timelineDesc { font-size: 0.82rem; }
+
+  /* Doctors */
   .doctorsGrid { grid-template-columns: 1fr; }
-  .testimonialsGrid { grid-template-columns: 1fr; }
-  .tourGrid { grid-template-columns: repeat(2, 1fr); }
-  .techGrid { grid-template-columns: repeat(2, 1fr); }
+  .doctorInfo { padding: 18px 16px; }
+  .doctorName { font-size: 1rem; }
+  .doctorMeta { flex-wrap: wrap; gap: 6px; }
+  .doctorBadge { font-size: 0.68rem; padding: 3px 8px; }
+
+  /* Why Us */
+  .whyGrid { grid-template-columns: 1fr; gap: 16px; }
+  .whyCard { padding: 26px 22px; }
+  .whyIconWrap { width: 48px; height: 48px; font-size: 1.4rem; margin-bottom: 14px; }
+  .whyTitle { font-size: 1.05rem; }
+  .whyDesc { font-size: 0.88rem; }
+
+  /* Mission & Vision */
+  .mvGrid { gap: 16px; }
+  .mvCard { padding: 28px 22px; }
+  .mvIcon { font-size: 2rem; margin-bottom: 12px; }
+  .mvTitle { font-size: 1.2rem; }
+  .mvDesc { font-size: 0.88rem; }
+  .mvList li { font-size: 0.85rem; }
+
+  /* Clinic Tour — horizontal scroll carousel */
+  .tourGrid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 4px 4px 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    grid-template-columns: unset;
+  }
+  .tourGrid::-webkit-scrollbar { display: none; }
+  .tourItem {
+    flex: 0 0 72vw;
+    max-width: 280px;
+    min-width: 220px;
+    scroll-snap-align: start;
+    aspect-ratio: 4/3;
+  }
+
+  /* Technology — horizontal scroll carousel */
+  .techGrid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 4px 4px 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    grid-template-columns: unset;
+  }
+  .techGrid::-webkit-scrollbar { display: none; }
+  .techCard {
+    flex: 0 0 72vw;
+    max-width: 280px;
+    min-width: 220px;
+    scroll-snap-align: start;
+    padding: 28px 20px;
+  }
+
+  /* Stats strip */
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
   .statCard:nth-child(2) { border-right: none; }
   .statCard:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); }
   .statCard:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.1); border-right: none; }
-  .certGrid { grid-template-columns: repeat(2, 1fr); }
+  .statVal { font-size: 1.6rem; }
+  .statLbl { font-size: 0.7rem; }
+
+  /* Testimonials */
+  .testimonialsGrid { grid-template-columns: 1fr; gap: 14px; }
+  .testimonialCard { padding: 24px 20px; }
+  .testimonialText { font-size: 0.92rem; }
+
+  /* Certifications */
+  .certGrid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .certCard { padding: 24px 16px; gap: 8px; }
+  .certIconWrap { width: 52px; height: 52px; }
+  .certTitle { font-size: 1rem; }
+  .certSub { font-size: 0.85rem; }
+
+  /* CTA */
   .ctaInner { flex-direction: column; text-align: center; }
-  .ctaBtns { justify-content: center; }
+  .ctaBtns { justify-content: center; flex-direction: column; width: 100%; }
+  .ctaBtns .btnPrimary, .ctaBtns .ctaPhone { justify-content: center; width: 100%; }
+
+  /* Section padding */
+  .storySection, .doctorsSection, .whySection, .mvSection,
+  .tourSection, .techSection, .testimonialsSection, .certSection, .ctaSection { padding: 40px 0; }
+  .statsStrip { padding: 30px 0; }
+  .sectionHead { margin-bottom: 28px; }
+  .sectionTitle { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .sectionSub { font-size: 0.9rem; }
 }
 @media (max-width: 480px) {
+  .heroStats { gap: 10px; padding: 12px; }
+  .heroStatVal { font-size: 1.1rem; }
+
   .whyGrid { grid-template-columns: 1fr; }
-  .techGrid { grid-template-columns: 1fr; }
-  .tourGrid { grid-template-columns: 1fr; }
+  .certGrid { grid-template-columns: 1fr; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .statCard:nth-child(n) { border-right: none; border-top: 1px solid rgba(255,255,255,0.1); }
+  .statCard:first-child { border-top: none; }
+  .statCard:nth-child(2) { border-top: none; border-right: none; }
+  .statCard:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.1); }
+
+  .mvCard { padding: 22px 16px; }
+  .techCard { padding: 22px 16px; }
+  .certCard { padding: 20px 14px; }
+  .testimonialCard { padding: 20px 16px; }
 }

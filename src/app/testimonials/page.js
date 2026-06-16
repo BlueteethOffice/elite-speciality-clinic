@@ -198,7 +198,7 @@ export default function TestimonialsPage() {
   const [pageData, setPageData] = useState({
     heroTitle: "⭐ What Our",
     heroAccent: "Patients Say",
-    heroSub: "Real stories. Real smiles. Real experiences.\\nJoin 5,000+ patients who transformed their smiles at Elite Speciality Clinic.",
+    heroSub: "Real stories. Real smiles. Real experiences.\nJoin 5,000+ patients who transformed their smiles at Elite Speciality Clinic.",
     heroImage: "/images/testimonials-hero.png",
     stats: stats // default stats from data
   });
@@ -207,6 +207,7 @@ export default function TestimonialsPage() {
 
   useEffect(() => {
     async function fetchPageData() {
+      if (!db) return;
       try {
         const snap = await getDoc(doc(db, "siteContent", "testimonials"));
         if (snap.exists()) {
@@ -218,7 +219,7 @@ export default function TestimonialsPage() {
           setPageData({
             heroTitle: title,
             heroAccent: accent,
-            heroSub: data.heroSub || pageData.heroSub,
+            heroSub: data.heroSub ? data.heroSub.replace(/\\n/g, '\n') : pageData.heroSub,
             heroImage: data.heroImage || pageData.heroImage,
             stats: [
               { value: data.stat1 || stats[0].value, label: data.stat1Lbl || stats[0].label },
@@ -283,7 +284,7 @@ export default function TestimonialsPage() {
             src={pageData.heroImage}
             alt=""
             fill
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            className={styles.heroImage}
             priority
           />
           <div className={styles.heroOverlay} />

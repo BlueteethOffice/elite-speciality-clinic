@@ -117,6 +117,7 @@ export default function AboutPage() {
 
   useEffect(() => {
     async function fetchPageData() {
+      if (!db) return;
       try {
         const snap = await getDoc(doc(db, "siteContent", "about"));
         if (snap.exists()) {
@@ -453,7 +454,7 @@ export default function AboutPage() {
           <div className={styles.lightboxBackdrop} onClick={() => setLightbox(null)} />
           <div className={styles.lightboxBox}>
             <button className={styles.lightboxClose} onClick={() => setLightbox(null)}><X size={20} /></button>
-            <Image src={lightbox} alt="Clinic" fill style={{ objectFit: "contain" }} />
+            <Image src={lightbox} alt="Clinic" fill style={{ objectFit: "cover" }} />
           </div>
         </div>
       )}

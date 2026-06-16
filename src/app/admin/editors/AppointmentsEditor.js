@@ -12,6 +12,7 @@ export default function AppointmentsEditor() {
 
   const fetchAppointments = async () => {
     setLoading(true);
+    if (!db) { setLoading(false); return; }
     try {
       const q = query(collection(db, "appointments"), orderBy("createdAt", "desc"));
       const snap = await getDocs(q);
@@ -28,6 +29,7 @@ export default function AppointmentsEditor() {
   }, []);
 
   const updateStatus = async (id, newStatus) => {
+    if (!db) return;
     try {
       await updateDoc(doc(db, "appointments", id), { status: newStatus });
       setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
@@ -38,6 +40,7 @@ export default function AppointmentsEditor() {
 
   const deleteAppointment = async (id) => {
     if (!confirm("Are you sure you want to delete this appointment?")) return;
+    if (!db) return;
     try {
       await deleteDoc(doc(db, "appointments", id));
       setAppointments(prev => prev.filter(a => a.id !== id));

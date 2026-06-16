@@ -26,6 +26,7 @@ export default function AboutEditor() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!db) { setLoading(false); return; }
     try {
       const timer = setTimeout(() => setLoading(false), 500);
       getDoc(doc(db, "siteContent", "about")).then(snap => {
@@ -42,7 +43,7 @@ export default function AboutEditor() {
   const save = async () => {
     setSaving(true);
     try {
-      await setDoc(doc(db, "siteContent", "about"), data);
+      if (db) await setDoc(doc(db, "siteContent", "about"), data);
     } catch (e) {
       console.error(e);
     }

@@ -23,14 +23,11 @@ export default function BlogEditor() {
 
   const fetchData = async () => {
     setLoading(true);
+    if (!db) { setLoading(false); return; }
     try {
-      // Fetch Page Data
-      const timer = setTimeout(() => {}, 500); // Ignore offline timeout issues
       getDoc(doc(db, "siteContent", "blog")).then(snap => {
         if (snap.exists()) setPageData({ ...DEFAULT_PAGE_DATA, ...snap.data() });
       }).catch(console.error);
-
-      // Fetch Blogs Collection
       const snap = await getDocs(collection(db, "blogs"));
       const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       setBlogs(data);
@@ -47,7 +44,7 @@ export default function BlogEditor() {
   const savePageData = async () => {
     setSavingPage(true);
     try {
-      await setDoc(doc(db, "siteContent", "blog"), pageData);
+      if (db) await setDoc(doc(db, "siteContent", "blog"), pageData);
     } catch (e) {
       console.error(e);
     }
@@ -59,6 +56,7 @@ export default function BlogEditor() {
 
   const saveBlog = async () => {
     if (!formData.title || !formData.content) return alert("Title and Content are required");
+    if (!db) return alert("Firebase not configured");
     try {
       if (editingId) {
         await setDoc(doc(db, "blogs", editingId), formData, { merge: true });
@@ -80,6 +78,7 @@ export default function BlogEditor() {
 
   const deleteBlog = async (id) => {
     if (!confirm("Are you sure you want to delete this blog post?")) return;
+    if (!db) return;
     try {
       await deleteDoc(doc(db, "blogs", id));
       setBlogs(prev => prev.filter(b => b.id !== id));

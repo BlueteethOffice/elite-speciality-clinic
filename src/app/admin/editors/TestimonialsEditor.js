@@ -27,12 +27,11 @@ export default function TestimonialsEditor() {
 
   const fetchData = async () => {
     setLoading(true);
+    if (!db) { setLoading(false); return; }
     try {
-      const timer = setTimeout(() => {}, 500);
       getDoc(doc(db, "siteContent", "testimonials")).then(snap => {
         if (snap.exists()) setPageData({ ...DEFAULT_PAGE_DATA, ...snap.data() });
       }).catch(console.error);
-
       const snap = await getDocs(collection(db, "testimonials"));
       const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       setTestimonials(data);
@@ -49,7 +48,7 @@ export default function TestimonialsEditor() {
   const savePageData = async () => {
     setSavingPage(true);
     try {
-      await setDoc(doc(db, "siteContent", "testimonials"), pageData);
+      if (db) await setDoc(doc(db, "siteContent", "testimonials"), pageData);
     } catch (e) {
       console.error(e);
     }
@@ -61,6 +60,7 @@ export default function TestimonialsEditor() {
 
   const saveTestimonial = async () => {
     if (!formData.name || !formData.text) return alert("Name and Review Text are required");
+    if (!db) return alert("Firebase not configured");
     try {
       if (editingId) {
         await setDoc(doc(db, "testimonials", editingId), formData, { merge: true });
@@ -82,6 +82,7 @@ export default function TestimonialsEditor() {
 
   const deleteTestimonial = async (id) => {
     if (!confirm("Are you sure you want to delete this testimonial?")) return;
+    if (!db) return;
     try {
       await deleteDoc(doc(db, "testimonials", id));
       setTestimonials(prev => prev.filter(t => t.id !== id));

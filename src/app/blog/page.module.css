@@ -127,8 +127,14 @@
 
 /* ══════════ ARTICLES + SIDEBAR ══════════ */
 .articlesSection { padding: 50px 0 80px; }
+.filtersWrapper {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 40px;
+}
+.filterScrollBtn {
+  display: none; /* shown only on mobile */
+}
 .filters {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;
+  display: flex; flex-wrap: wrap; gap: 10px; flex: 1;
 }
 .filterBtn {
   background: #fff; border: 1.5px solid #D1E3F6; color: #475569;
@@ -143,6 +149,7 @@
 }
 
 /* Grid — 2 cols */
+.gridWrapper { }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .empty { text-align: center; padding: 60px 0; color: #94A3B8; font-size: 1rem; }
 
@@ -418,6 +425,11 @@
 }
 .ctaPhone:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
 
+/* Mobile sidebar sections — only visible on mobile, hidden on desktop */
+.mobileSidebarSections {
+  display: none;
+}
+
 /* ══════════ RESPONSIVE ══════════ */
 @media (max-width: 1200px) {
   .articlesLayout { grid-template-columns: 1fr 280px; }
@@ -431,18 +443,101 @@
   .featuredCard { grid-template-columns: 1fr; }
   .featuredImg { min-height: 240px; }
   .articlesLayout { grid-template-columns: 1fr; }
-  .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
   .sideCard { flex: 1; min-width: 260px; }
 }
 @media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
-  .videoGrid { grid-template-columns: 1fr; }
+  .heroLeft { padding: 32px 0; position: relative; z-index: 2; }
+  .heroInner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    position: relative;
+    min-height: 380px;
+  }
+  .heroRight {
+    display: block;
+    position: absolute;
+    top: 0; right: 0;
+    width: 60%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0;
+    margin: 0;
+    opacity: 0.2;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 40%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 40%, black 100%);
+  }
+
+  /* Article cards — single column vertical stack */
+  .gridWrapper {
+    margin: 0;
+    overflow: visible;
+  }
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    grid-template-columns: unset;
+  }
+  .card {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: unset;
+  }
+
+  /* articlesLayout single column */
+  .articlesLayout { display: block; }
+
+  .videoGrid { grid-template-columns: repeat(2, 1fr); }
   .tipsGrid { grid-template-columns: repeat(2, 1fr); }
   .newsletterForm { flex-direction: column; }
   .ctaInner { flex-direction: column; text-align: center; }
   .ctaBtns { justify-content: center; }
+  
+  .featuredSection, .articlesSection, .videoSection, .tipsSection, .faqSection, .newsletterSection, .ctaSection { padding: 40px 0; }
+  .sectionHead { margin-bottom: 28px; }
+  
+  .featuredBody { padding: 24px; }
+  .cardBody { padding: 16px 18px; }
+  .sidebar { display: none !important; }
+
+  /* Horizontal scroll for filters */
+  .filtersWrapper {
+    margin-bottom: 20px; gap: 4px;
+    margin-left: -16px; margin-right: -16px;
+    padding: 0 4px;
+  }
+  .filterScrollBtn {
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; width: 34px; height: 34px;
+    background: #fff; border: 1.5px solid #D1E3F6; border-radius: 50%;
+    color: #0EA5E9; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.15);
+    transition: background 0.2s, box-shadow 0.2s;
+    z-index: 1;
+  }
+  .filterScrollBtn:hover { background: #EFF8FF; box-shadow: 0 4px 12px rgba(14,165,233,0.25); }
+  .filters {
+    flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+    padding: 6px 12px; gap: 8px;
+    -ms-overflow-style: none; scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filterBtn { flex-shrink: 0; scroll-snap-align: start; }
+  
+  .heroSearch { width: 100%; max-width: 100%; }
+  
+  /* Show mobile sidebar sections below article carousel */
+  .mobileSidebarSections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 28px;
+  }
 }
 @media (max-width: 480px) {
   .tipsGrid { grid-template-columns: 1fr; }
   .newsletterCard { padding: 32px 24px; }
+  .featuredMeta { flex-direction: column; align-items: flex-start; gap: 10px; }
 }

@@ -28,6 +28,7 @@
   z-index: 1000;
   background: #fff;
   transition: box-shadow 0.3s ease;
+  overflow: visible;
 }
 
 .scrolled {
@@ -37,6 +38,8 @@
 .mainNav {
   background: #fff;
   border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  z-index: 2;
 }
 
 .navContainer {
@@ -107,17 +110,18 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-  min-width: 480px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  min-width: 620px;
   padding: 20px;
-  z-index: 999;
+  z-index: 9999;
   animation: fadeDown 0.18s ease;
+  overflow: visible;
 }
 
 /* Invisible bridge to prevent hover gap closing dropdown */
@@ -138,7 +142,7 @@
 
 .dropdownGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 4px;
   margin-bottom: 14px;
 }
@@ -231,12 +235,30 @@
 /* ── MOBILE MENU ── */
 .mobileMenu {
   display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: #fff;
-  border-top: 1px solid #f0f0f0;
-  padding: 16px 20px 24px;
+  z-index: 9999;
+  padding: 80px 20px 32px;
   flex-direction: column;
   gap: 2px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  overflow-y: auto;
+  box-shadow: none;
+  border-top: none;
+}
+
+.mobileMenuHeader {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+}
+
+.mobileCloseBtn {
+  background: none; border: none; cursor: pointer;
+  color: #0A192F; padding: 4px; display: flex; align-items: center;
 }
 
 .mobileLink {
@@ -266,19 +288,22 @@
 .mobileSummary:hover { color: #008080; }
 
 .mobileSubLinks {
-  padding: 4px 0 8px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  padding: 4px 0 8px 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 4px;
 }
 
 .mobileSubLink {
-  font-size: 0.875rem;
+  font-size: 0.78rem;
   color: #4b5563;
   text-decoration: none;
-  padding: 8px 8px;
+  padding: 6px 8px;
   border-radius: 6px;
   transition: all 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mobileSubLink:hover {
   background: #f0fdfa;
@@ -310,6 +335,25 @@
   .mobileMenu { display: flex; }
 }
 
+@media (max-width: 768px) {
+  .navContainer {
+    padding: 12px 20px;
+  }
+  .logoElite {
+    font-size: 1.3rem;
+  }
+}
+
 @media (max-width: 500px) {
   .topBar .container { justify-content: center; font-size: 0.72rem; }
+  .navContainer {
+    padding: 10px 16px;
+  }
+  .logoElite {
+    font-size: 1.2rem;
+  }
+  .logoClinic {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+  }
 }

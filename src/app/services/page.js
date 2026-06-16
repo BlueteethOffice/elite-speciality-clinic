@@ -148,7 +148,7 @@ export default function ServicesPage() {
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 300; // card width + gap
+      const scrollAmount = 400; // Scrolls approximately 1.5 cards
       scrollContainerRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",

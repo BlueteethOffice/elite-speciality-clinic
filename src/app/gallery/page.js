@@ -428,7 +428,7 @@ export default function SmileGallery() {
             src="/images/gallery-hero.png"
             alt=""
             fill
-            style={{ objectFit: "cover", objectPosition: "center top" }}
+            className={styles.heroImage}
             priority
           />
           <div className={styles.heroOverlay} />

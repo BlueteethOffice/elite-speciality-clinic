@@ -102,6 +102,7 @@ export default function ContactPage() {
 
   useEffect(() => {
     const fetchContent = async () => {
+      if (!db) return;
       try {
         const snap = await getDoc(doc(db, "siteContent", "contact"));
         if (snap.exists()) {

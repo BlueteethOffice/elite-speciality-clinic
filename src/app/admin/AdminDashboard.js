@@ -24,6 +24,12 @@ const PAGES = [
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activePage, setActivePage] = useState("home");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleNavClick = (id) => {
+    setActivePage(id);
+    setSidebarOpen(false);
+  };
 
   const renderEditor = () => {
     switch (activePage) {
@@ -41,8 +47,14 @@ export default function AdminDashboard({ user, onLogout }) {
 
   return (
     <div className={styles.dashboard}>
+      {/* Mobile backdrop */}
+      <div
+        className={`${styles.sidebarBackdrop} ${sidebarOpen ? styles.sidebarBackdropVisible : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.sidebarHeader}>
           <img src="/images/admin-logo.png" alt="Elite Clinic Logo" className={styles.sidebarLogoImg} />
           <div>
@@ -56,7 +68,7 @@ export default function AdminDashboard({ user, onLogout }) {
           {PAGES.map(p => (
             <button
               key={p.id}
-              onClick={() => setActivePage(p.id)}
+              onClick={() => handleNavClick(p.id)}
               className={`${styles.navItem} ${activePage === p.id ? styles.navItemActive : ""}`}
             >
               <span>{p.icon}</span>
@@ -73,6 +85,16 @@ export default function AdminDashboard({ user, onLogout }) {
 
       {/* Main */}
       <main className={styles.main}>
+        {/* Mobile top bar */}
+        <div className={styles.mobileTopBar}>
+          <span className={styles.mobileTopBarTitle}>
+            {PAGES.find(p => p.id === activePage)?.label}
+          </span>
+          <button className={styles.mobileHamburger} onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+            ☰
+          </button>
+        </div>
+
         <div className={styles.mainHeader}>
           <h1 className={styles.mainTitle}>
             {PAGES.find(p => p.id === activePage)?.label}

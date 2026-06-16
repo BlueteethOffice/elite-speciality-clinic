@@ -17,6 +17,10 @@
 .heroBg {
   position: absolute; inset: 0; pointer-events: none; overflow: hidden;
 }
+.heroImage {
+  object-fit: cover;
+  object-position: center;
+}
 .heroOverlay {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(
@@ -484,16 +488,45 @@
   .googleBadge { flex-direction: column; gap: 24px; align-items: flex-start; }
 }
 @media (max-width: 768px) {
-  .heroStats { flex-direction: column; gap: 12px; }
-  .heroStatDivider { width: 80%; height: 1px; }
+  .heroImage { object-position: 80% top; }
+  .heroOverlay {
+    background: linear-gradient(to bottom, rgba(239, 248, 255, 0.92) 0%, rgba(239, 248, 255, 0.75) 50%, rgba(239, 248, 255, 0.1) 100%);
+  }
+  .hero { padding: 60px 0 40px; }
+  .videoSection, .googleSection, .storiesSection, .reelsSection, .ctaSection { padding: 40px 0; }
+  .statsStrip { padding: 30px 0; }
+  .googleBadge { padding: 20px; margin-bottom: 24px; flex-direction: column; gap: 20px; align-items: stretch; }
+  .googleBadgeLeft { justify-content: center; }
+  .googleBadgeRight { width: 100%; }
+  .googlePercents { width: 100%; }
+  .googleBar { width: 100%; }
+  .googleBarTrack { flex: 1; min-width: 0; }
+  .sectionHead { margin-bottom: 28px; }
+  .heroStats { flex-direction: column; gap: 12px; width: 100%; }
+  .heroStatDivider { width: 100%; height: 1px; }
   .reviewsGrid { grid-template-columns: 1fr; }
   .storiesGrid { grid-template-columns: 1fr; }
-  .reelsGrid { grid-template-columns: repeat(3, 1fr); }
   .ctaInner { flex-direction: column; text-align: center; }
   .ctaBtns { justify-content: center; }
-  .heroBtns { flex-direction: column; align-items: flex-start; }
+  .heroBtns { flex-direction: column; align-items: flex-start; width: 100%; }
+  .btnPrimary, .btnOutline { width: 100%; justify-content: center; }
+  
+  /* Horizontal scroll adjustments for mobile */
+  .scrollBtn { display: none; } /* Hide scroll buttons on mobile, swipe is better */
+  .videoScrollTrack { padding: 8px 16px; margin: 0 -16px; width: calc(100% + 32px); scroll-padding-left: 16px; }
+  .videoCard { min-width: 85vw; max-width: 85vw; }
+  
+  .reelsScrollTrack { padding: 8px 16px; margin: 0 -16px; width: calc(100% + 32px); scroll-padding-left: 16px; }
+  .reelCard { min-width: 160px; max-width: 160px; }
+  
+  .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 10px; justify-content: flex-start; margin: 0 -16px 30px; padding-left: 16px; padding-right: 16px; width: calc(100% + 32px); }
+  .filterBtn { flex-shrink: 0; }
 }
 @media (max-width: 480px) {
-  .reelsGrid { grid-template-columns: repeat(2, 1fr); }
-  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .statsGrid { grid-template-columns: 1fr; gap: 0; }
+  .statCard { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); border-top: none !important; }
+  .statCard:last-child { border-bottom: none; }
+  .reelCard { min-width: 140px; max-width: 140px; }
+  .googleBadgeLeft { flex-direction: row; text-align: left; gap: 16px; align-items: center; width: 100%; justify-content: flex-start; }
 }
+

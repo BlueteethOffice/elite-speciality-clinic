@@ -19,6 +19,7 @@ const serviceLinks = [
   { label: "Zoom Whitening", href: "/zoom-whitening" },
   { label: "Composite Veneers", href: "/composite-veneers" },
   { label: "Emax Veneers", href: "/emax-veneers" },
+  { label: "Smile Makeover", href: "/smile-makeover" },
   { label: "Invisible Braces", href: "/invisible-braces" },
   { label: "Braces", href: "/braces" },
   { label: "Dental Implants", href: "/implants" },
@@ -28,7 +29,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const closeTimer = React.useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+  const closeTimer = useRef(null);
 
   const openDropdown = () => {
     clearTimeout(closeTimer.current);
@@ -39,14 +41,23 @@ export default function Navbar() {
     closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
   };
 
-  if (pathname?.startsWith("/admin")) return null;
-  const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
@@ -132,6 +143,16 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className={styles.mobileMenu}>
+          {/* Menu header with logo + close */}
+          <div className={styles.mobileMenuHeader}>
+            <Link href="/" className={styles.logo} onClick={() => setMobileOpen(false)}>
+              <span className={styles.logoElite}>ELITE</span>
+              <span className={styles.logoClinic}>SPECIALITY CLINIC</span>
+            </Link>
+            <button className={styles.mobileCloseBtn} onClick={() => setMobileOpen(false)} aria-label="Close menu">
+              <X size={26} />
+            </button>
+          </div>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileOpen(false)}>Home</Link>
           <details className={styles.mobileDropdown}>
             <summary className={styles.mobileSummary}>Treatments</summary>

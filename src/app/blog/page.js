@@ -149,6 +149,7 @@ export default function BlogPage() {
 
   useEffect(() => {
     async function fetchPageData() {
+      if (!db) return;
       try {
         const snap = await getDoc(doc(db, "siteContent", "blog"));
         if (snap.exists()) {
@@ -281,38 +282,40 @@ export default function BlogPage() {
           <div className={styles.articlesLayout}>
             {/* Articles Grid */}
             <div>
-              <div className={styles.grid}>
-                {filteredArticles.map(art => (
-                  <Link href={`/blog/${art.slug}`} key={art.id} className={styles.card}>
-                    <div className={styles.cardImg}>
-                      <Image src={art.img} alt={art.title} fill style={{ objectFit: "cover" }} />
-                      <span className={styles.catTag} style={{ color: art.tagColor, background: art.tagBg }}>
-                        {art.tag}
-                      </span>
-                    </div>
-                    <div className={styles.cardBody}>
-                      <h3 className={styles.cardTitle}>{art.title}</h3>
-                      <p className={styles.cardExcerpt}>{art.excerpt}</p>
-                      <div className={styles.cardFooter}>
-                        <div className={styles.cardAuthor}>
-                          <div className={styles.authorAvatarSm}>{art.author.charAt(3)}</div>
-                          <span>{art.author}</span>
-                        </div>
-                        <div className={styles.cardMeta}>
-                          <span><Clock size={11} /> {art.readTime}</span>
-                        </div>
+              <div className={styles.gridWrapper}>
+                <div className={styles.grid}>
+                  {filteredArticles.map(art => (
+                    <Link href={`/blog/${art.slug}`} key={art.id} className={styles.card}>
+                      <div className={styles.cardImg}>
+                        <Image src={art.img} alt={art.title} fill style={{ objectFit: "cover" }} />
+                        <span className={styles.catTag} style={{ color: art.tagColor, background: art.tagBg }}>
+                          {art.tag}
+                        </span>
                       </div>
-                      <span className={styles.readMore}>Read More →</span>
-                    </div>
-                  </Link>
-                ))}
+                      <div className={styles.cardBody}>
+                        <h3 className={styles.cardTitle}>{art.title}</h3>
+                        <p className={styles.cardExcerpt}>{art.excerpt}</p>
+                        <div className={styles.cardFooter}>
+                          <div className={styles.cardAuthor}>
+                            <div className={styles.authorAvatarSm}>{art.author.charAt(3)}</div>
+                            <span>{art.author}</span>
+                          </div>
+                          <div className={styles.cardMeta}>
+                            <span><Clock size={11} /> {art.readTime}</span>
+                          </div>
+                        </div>
+                        <span className={styles.readMore}>Read More →</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
               {filteredArticles.length === 0 && (
                 <p className={styles.empty}>No articles found. Try a different search or category.</p>
               )}
             </div>
 
-            {/* Sidebar */}
+            {/* Sidebar — desktop only (hidden on mobile via CSS) */}
             <aside className={styles.sidebar}>
               {/* Popular Articles — FIRST */}
               <div className={styles.sideCard}>
@@ -385,6 +388,80 @@ export default function BlogPage() {
                 </div>
               </div>
             </aside>
+          </div>
+
+          {/* Mobile-only sidebar sections — shown below the article carousel */}
+          <div className={styles.mobileSidebarSections}>
+            {/* Most Read Articles */}
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>🔥 Most Read Articles</h3>
+              <ul className={styles.popularList}>
+                {popularArticles.map((a, i) => (
+                  <li key={i} className={styles.popularItem}>
+                    <div className={styles.popularImg}>
+                      <Image src={a.img} alt={a.title} fill style={{ objectFit: "cover" }} />
+                    </div>
+                    <div className={styles.popularInfo}>
+                      <Link href={`/blog/${popularArticles[i]?.slug || '#'}`} className={styles.popularLink}>{a.title}</Link>
+                      <span className={styles.popularDate}>{a.date}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Categories */}
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>Categories</h3>
+              <ul className={styles.catList}>
+                {[
+                  { id: "all",       label: "All Posts",          count: articles.length },
+                  { id: "implants",  label: "Dental Implants",    count: articles.filter(a => a.category === "implants").length },
+                  { id: "braces",    label: "Braces",             count: articles.filter(a => a.category === "braces").length },
+                  { id: "rootcanal", label: "Root Canal",         count: articles.filter(a => a.category === "rootcanal").length },
+                  { id: "cosmetic",  label: "Cosmetic Dentistry", count: articles.filter(a => a.category === "cosmetic").length },
+                  { id: "hygiene",   label: "Oral Hygiene",       count: articles.filter(a => a.category === "hygiene").length },
+                  { id: "kids",      label: "Kids Dentistry",     count: articles.filter(a => a.category === "kids").length },
+                  { id: "makeover",  label: "Smile Makeover",     count: articles.filter(a => a.category === "makeover").length },
+                ].map(cat => (
+                  <li key={cat.id}>
+                    <button
+                      className={`${styles.catListItem} ${activeCategory === cat.id ? styles.catListItemActive : ""}`}
+                      onClick={() => setActiveCategory(cat.id)}
+                    >
+                      <span>{cat.label}</span>
+                      <span className={`${styles.catCount} ${activeCategory === cat.id ? styles.catCountActive : ""}`}>{cat.count}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Weekly Tips */}
+            <div className={styles.sideCard} style={{ background: "linear-gradient(135deg, #EFF8FF, #DBEAFE)" }}>
+              <h3 className={styles.sideTitle}>📬 Weekly Tips</h3>
+              <p className={styles.sideNewsletterText}>Get expert dental tips every week in your inbox.</p>
+              <input type="email" placeholder="Your email..." className={styles.sideEmail} />
+              <button className={styles.sideSubscribeBtn}>Subscribe</button>
+            </div>
+
+            {/* Oral Health Tips */}
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>🦷 Oral Health Tips</h3>
+              <div className={styles.sideTipsList}>
+                {oralHealthTips.map(tip => (
+                  <div key={tip.title} className={styles.sideTipItem}>
+                    <div className={styles.sideTipIcon} style={{ background: tip.bg }}>
+                      {tip.icon}
+                    </div>
+                    <div>
+                      <p className={styles.sideTipTitle}>{tip.title}</p>
+                      <p className={styles.sideTipDesc}>{tip.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

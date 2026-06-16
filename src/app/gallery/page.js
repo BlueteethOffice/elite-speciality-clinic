@@ -199,6 +199,7 @@ function BeforeAfterSlider({ beforeImg, afterImg, title }) {
   const [pos, setPos] = useState(50);
   const [dragging, setDragging] = useState(false);
   const ref = useRef(null);
+  const draggingRef = useRef(false);
 
   const update = useCallback((clientX) => {
     if (!ref.current) return;
@@ -206,10 +207,25 @@ function BeforeAfterSlider({ beforeImg, afterImg, title }) {
     setPos(Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100)));
   }, []);
 
+  // Keep ref in sync with state for use in native event listener
+  useEffect(() => { draggingRef.current = dragging; }, [dragging]);
+
+  // Native touch listener with passive:false to allow preventDefault
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const handleTouchMove = (e) => {
+      if (!draggingRef.current) return;
+      e.preventDefault();
+      update(e.touches[0].clientX);
+    };
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", handleTouchMove);
+  }, [update]);
+
   const onDown  = (e) => { e.preventDefault(); setDragging(true); };
   const onMove  = useCallback((e) => { if (dragging) update(e.clientX); }, [dragging, update]);
   const onUp    = useCallback(() => setDragging(false), []);
-  const onTouch = useCallback((e) => update(e.touches[0].clientX), [update]);
 
   return (
     <div
@@ -218,7 +234,6 @@ function BeforeAfterSlider({ beforeImg, afterImg, title }) {
       onMouseMove={onMove}
       onMouseUp={onUp}
       onMouseLeave={onUp}
-      onTouchMove={onTouch}
       onTouchEnd={onUp}
       aria-label={`Before and after: ${title}`}
     >

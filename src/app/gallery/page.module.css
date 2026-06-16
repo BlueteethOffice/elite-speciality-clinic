@@ -348,6 +348,7 @@
   position: absolute; top: 0; bottom: 0;
   transform: translateX(-50%);
   z-index: 10; display: flex; flex-direction: column; align-items: center;
+  touch-action: none;
 }
 .sliderHandle:focus { outline: none; }
 .sliderLine {
@@ -359,13 +360,16 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.25);
   display: flex; align-items: center; justify-content: center;
   color: #0B1F3A;
-  position: absolute; top: 50%; transform: translateY(-50%);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: absolute; top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: box-shadow 0.15s ease;
   cursor: ew-resize;
+  flex-shrink: 0;
+  touch-action: none;
 }
 .sliderThumb:hover {
   box-shadow: 0 6px 22px rgba(0,0,0,0.3);
-  transform: translateY(-50%) scale(1.1);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -672,24 +676,22 @@
   .filters { gap: 8px; margin-bottom: 28px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
   .filterBtn { white-space: nowrap; flex-shrink: 0; padding: 8px 16px; font-size: 0.8rem; }
 
-  /* Gallery grid */
+  /* Gallery grid — single column vertical */
   .grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 16px;
-    padding-bottom: 16px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    overflow-x: visible;
+    flex-wrap: unset;
+    padding-bottom: 0;
+    scroll-snap-type: none;
   }
-  .grid::-webkit-scrollbar {
-    display: none;
-  }
+  .grid::-webkit-scrollbar { display: none; }
   .grid > * {
-    min-width: 85vw;
-    flex-shrink: 0;
-    scroll-snap-align: center;
+    min-width: unset;
+    flex-shrink: unset;
+    scroll-snap-align: unset;
+    width: 100%;
   }
 
   /* Featured card */
